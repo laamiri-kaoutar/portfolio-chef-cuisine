@@ -4,9 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
+    <link href="assets/img/stats-bg.jpg" rel="apple-touch-icon">
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+  
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet">
+
     <style>
         :root {
-            --background-color: #f9f9f9;
+            --background-color: #ffffff;
             --default-color: #212529;
             --heading-color: #37373f;
             --accent-color: #ce1212;
@@ -14,7 +33,6 @@
             --contrast-color: #ffffff;
             --nav-color: #7f7f90;
             --nav-hover-color: #ce1212;
-            --button-hover-color: #c10000;
         }
 
         body {
@@ -25,273 +43,283 @@
             padding: 0;
         }
 
-        header {
-            background-color: var(--surface-color);
-            padding: 1rem;
+        header, footer {
+            background-color: var(--accent-color);
+            color: var(--contrast-color);
+            padding: 10px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        nav ul {
-            list-style: none;
-            padding: 0;
+        .container {
+            padding: 20px;
         }
 
-        nav ul li {
-            display: inline;
-            margin: 0 1rem;
-        }
-
-        nav ul li a {
-            color: var(--nav-color);
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav ul li a:hover {
-            color: var(--nav-hover-color);
-        }
-
-        .user-reservation {
-            padding: 2rem;
-            background-color: var(--surface-color);
-            margin-top: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .user-reservation h2 {
-            color: var(--heading-color);
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .reservation-cards {
+        .cards-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 20px;
             justify-content: center;
         }
 
-        .reservation-card {
+        .card {
             background-color: var(--surface-color);
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            width: 250px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.2s ease-in-out;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease;
         }
 
-        .reservation-card:hover {
+        .card:hover {
             transform: scale(1.05);
         }
 
-        .reservation-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .reservation-card p {
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            color: #555;
-        }
-
-        .reservation-card button {
-            background-color: var(--accent-color);
-            color: var(--contrast-color);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            width: 48%;
-            margin-right: 2%;
-            transition: background-color 0.3s ease;
-        }
-
-        .reservation-card button:hover {
-            background-color: var(--button-hover-color);
-        }
-
-        .reservation-card button:last-child {
-            margin-right: 0;
-        }
-
-        .menu-section {
-            padding: 2rem;
-            background-color: var(--surface-color);
-            margin-top: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .menu-section h2 {
-            color: var(--heading-color);
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .menu-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .menu-card {
-            background-color: var(--surface-color);
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 1rem;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .menu-card:hover {
-            transform: scale(1.05);
-        }
-
-        .menu-card img {
+        .card img {
             width: 100%;
-            height: auto;
-            border-radius: 8px;
+            height: 200px;
+            object-fit: cover;
         }
 
-        .menu-card h3 {
-            font-size: 1.2rem;
-            margin-top: 1rem;
+        .card-body {
+            padding: 15px;
         }
 
-        .menu-card ul {
-            list-style: none;
-            padding: 0;
-            margin: 1rem 0;
+        .card-body h3 {
+            color: var(--heading-color);
+            font-size: 1.5rem;
         }
 
-        .menu-card ul li {
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
+        .card-body p {
+            color: var(--default-color);
+            margin-bottom: 15px;
         }
 
-        .menu-card button {
+        .button-group {
+            display: flex;
+            
+            gap:16px;
+            margin-top: 10px;
+        }
+
+        .button-group button {
             background-color: var(--accent-color);
             color: var(--contrast-color);
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
-            margin-top: 1rem;
+            transition: background-color 0.3s ease;*
+           
+        }
+
+        .button-group button:hover {
+            background-color: #a80a0a;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal input, .modal select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .close-btn {
+            background-color: var(--accent-color);
+            color: var(--contrast-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .menu-card button:hover {
-            background-color: var(--button-hover-color);
+        .close-btn:hover {
+            background-color: #a80a0a;
         }
 
-        footer {
-            background-color: var(--surface-color);
-            padding: 1rem;
-            text-align: center;
-            margin-top: 2rem;
+        .modal h3 {
+            color: var(--heading-color);
         }
+
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Menu</a></li>
-                <li><a href="#">Reservations</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+<header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
 
-    <!-- User Reservation Section -->
-    <section class="user-reservation">
-        <h2>Your Reservations</h2>
-        <div class="reservation-cards">
-            <!-- Example of multiple reservation cards -->
-            <div class="reservation-card">
-                <h3>Menu 1</h3>
-                <p>Reservation Date: 2024-12-18</p>
-                <p>Reservation Time: 19:00</p>
-                <div>
-                    <button class="modify-btn">Modify</button>
-                    <button class="cancel-btn">Cancel</button>
-                </div>
-            </div>
-            <div class="reservation-card">
-                <h3>Menu 2</h3>
-                <p>Reservation Date: 2024-12-19</p>
-                <p>Reservation Time: 20:00</p>
-                <div>
-                    <button class="modify-btn">Modify</button>
-                    <button class="cancel-btn">Cancel</button>
-                </div>
-            </div>
-            <div class="reservation-card">
-                <h3>Menu 3</h3>
-                <p>Reservation Date: 2024-12-20</p>
-                <p>Reservation Time: 18:00</p>
-                <div>
-                    <button class="modify-btn">Modify</button>
-                    <button class="cancel-btn">Cancel</button>
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1 class="sitename">Yummy</h1>
+        <span>.</span>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Home<br></a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#menu">Dishes</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#testimonials">testimonials</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="index.html#book-a-table">log in</a>
+
+    </div>
+</header>
+
+<div class="container">
+
+    <h2>My Reservations</h2>
+    <div class="cards-container">
+        <!-- Example of a reservation card -->
+        <div class="card">
+            <img src="./assets/img/stats-bg.jpg" alt="Reservation">
+            <div class="card-body">
+                <h3>Reservation #1</h3>
+                <p>Date: 2024-12-25</p>
+                <p>Status: 18:00</p>
+
+                <p>Time: 18:00</p>
+                <div class="button-group">
+                    <button onclick="openForm()">Modify</button>
+                    <button>Cancel</button>
                 </div>
             </div>
         </div>
-    </section>
+        <!-- Add more reservation cards here -->
+    </div>
+<div class="container">
 
-    <!-- Menu Section -->
-    <section class="menu-section">
-        <h2>Available Menus</h2>
-        <div class="menu-cards">
-            <!-- Example of multiple menu cards with items -->
-            <div class="menu-card">
-                <img src="your-image.jpg" alt="Menu 1">
-                <h3>Menu 1</h3>
-                <ul>
-                    <li>Dish 1</li>
-                    <li>Dish 2</li>
-                    <li>Dish 3</li>
-                </ul>
-                <button class="reserve-btn">Reserve</button>
-            </div>
-            <div class="menu-card">
-                <img src="your-image.jpg" alt="Menu 2">
-                <h3>Menu 2</h3>
-                <ul>
-                    <li>Dish A</li>
-                    <li>Dish B</li>
-                    <li>Dish C</li>
-                </ul>
-                <button class="reserve-btn">Reserve</button>
-            </div>
-            <div class="menu-card">
-                <img src="your-image.jpg" alt="Menu 3">
-                <h3>Menu 3</h3>
-                <ul>
-                    <li>Dish X</li>
-                    <li>Dish Y</li>
-                    <li>Dish Z</li>
-                </ul>
-                <button class="reserve-btn">Reserve</button>
+</div>    
+    <h2>Available Menus</h2>
+    <div class="cards-container">
+        <!-- Example of a menu card -->
+        <div class="card">
+            <img src="./assets/img/stats-bg.jpg" alt="Menu">
+            <div class="card-body">
+                <h3>Menu #1</h3>
+                <p>Description of the menu.</p>
+                <p>Plats included: Dish 1, Dish 2, Dish 3</p>
+                <div class="button-group">
+                    <button style=" width: fit-content ; margin :auto;" onclick="openForm()">Reserve</button>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Your Restaurant</p>
-    </footer>
+        <!-- Add more menu cards here -->
+    </div>
+</div>
+
+<!-- Reservation Form Modal -->
+<div id="reservationModal" class="modal">
+    <div class="modal-content">
+        <h3>Reserve a Menu</h3>
+        <form action="#">
+            <label for="reservation-date">Date:</label>
+            <input type="date" id="reservation-date" name="reservation-date">
+            <label for="reservation-time">Time:</label>
+            <input type="time" id="reservation-time" name="reservation-time">
+            <div class="button-group">
+                <button type="submit" class="close-btn">Submit</button>
+                <button type="button" class="close-btn" onclick="closeForm()">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<footer id="footer" class="footer dark-background">
+
+<div class="container">
+  <div class="row gy-3">
+    <div class="col-lg-3 col-md-6 d-flex">
+      <i class="bi bi-geo-alt icon"></i>
+      <div class="address">
+        <h4>Address</h4>
+        <p>A108 Adam Street</p>
+        <p>New York, NY 535022</p>
+        <p></p>
+      </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6 d-flex">
+      <i class="bi bi-telephone icon"></i>
+      <div>
+        <h4>Contact</h4>
+        <p>
+          <strong>Phone:</strong> <span>+212 695 548 855</span><br>
+          <strong>Email:</strong> <span>ali.hassan@gmail.com</span><br>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 d-flex">
+      <i class="bi bi-clock icon"></i>
+      <div>
+        <h4>Opening Hours</h4>
+        <p>
+          <strong>Mon-Sat:</strong> <span>9AM - 23PM</span><br>
+          <strong>Sunday</strong>: <span>Closed</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <h4>Follow Us</h4>
+      <div class="social-links d-flex">
+        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container copyright text-center mt-4">
+  <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span></p>
+</div>
+
+</footer>
+
+<script>
+    function openForm() {
+        document.getElementById('reservationModal').style.display = 'flex';
+    }
+
+    function closeForm() {
+        document.getElementById('reservationModal').style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
