@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chef Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   
@@ -22,7 +23,6 @@
   
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
-
 
     <style>
         /* Custom Styles from Provided Color Scheme */
@@ -70,36 +70,70 @@
             vertical-align: middle;
         }
 
-      /* Form Buttons with Red Color */
-.btn-primary {
-    background-color: #dc3545; /* Red */
-    border-color: #dc3545;
-    width: auto; /* Make the button fit the content */
-    padding: 10px 20px; /* Adjust padding to your preference */
+        /* Form Buttons with Red Color */
+        .btn-primary {
+            background-color: #dc3545; /* Red */
+            border-color: #dc3545;
+        }
+
+        .btn-primary:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+
+        .btn-accept, .btn-decline {
+            color: white;
+        }
+
+        /* Hide the forms by default */
+        .form-section {
+            display: none;
+        }
+
+        /* Make sure only one section is visible at a time */
+        .visible {
+            display: block;
+        }
+
+        .header-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-.btn-primary:hover {
-    background-color:#ac1c2b;
-    border-color: #ac1c2b;
+.header-banner h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-.btn-accept, .btn-decline {
+.logout-btn {
+    display: inline-flex; /* Ensure the button only takes the space of its content */
+    align-items: center;
+    gap: 5px;
+    font-size: 16px;
+    padding: 5px 15px; /* Add padding for a compact look */
+    background-color: #dc3545;
     color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevents the button text from wrapping */
 }
 
-/* Prevent buttons from taking full width in the form */
-.form-section .btn {
-    width: auto; /* Ensures buttons fit their content */
+.logout-btn i {
+    font-size: 18px;
 }
 
-
-
-
-/* Styling buttons to be inline */
-.btn-group .btn {
-    margin-right: 24px; /* Add some space between the buttons */
+.logout-btn:hover {
+    background-color: #c82333;
 }
-
 
 
     </style>
@@ -109,192 +143,249 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <h4 class="text-center">Chef Dashboard</h4>
-        <a href="#" id="addMenuBtn"><i class="fas fa-plus icon-btn"></i> Add Menu</a>
         <a href="#" id="viewMenusBtn"><i class="fas fa-list icon-btn"></i> View Menus</a>
-        <a href="#" id="addPlatBtn"><i class="fas fa-plus-circle icon-btn"></i> Add Plat</a>
-        <a href="#"><i class="fas fa-eye icon-btn"></i> View Plats</a>
-        <a href="#"><i class="fas fa-calendar-check icon-btn"></i> Manage Reservations</a>
+        <a href="#" id="viewPlatsBtn"><i class="fas fa-eye icon-btn"></i> View Plats</a>
+        <a href="#" id="manageReservationsBtn"><i class="fas fa-calendar-check icon-btn"></i> Manage Reservations</a>
+        <a href="#" id="addMenuBtn"><i class="fas fa-plus icon-btn"></i> Add Menu</a>
+        <a href="#" id="addPlatBtn"><i class="fas fa-plus icon-btn"></i> Add Plat</a>
+        <a href="#" id="viewStatsBtn"><i class="fas fa-chart-line icon-btn"></i> View Statistics</a>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <h1>Welcome, Chef!</h1>
+       <div class="header-banner">
+          <h1>Welcome, <span style="color: #dc3545;">Hasan</span>!</h1>
+          <button class="btn btn-danger logout-btn" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i> Log Out
+          </button>
+       </div>
 
-        <!-- Add Menu Section (Initially Hidden) -->
+
+        <!-- View Menus Section (Initially Visible) -->
+        <div id="viewMenusSection" class="form-section visible">
+            <h2>All Menus</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Menu Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Menu 1</td>
+                        <td>Description of menu 1</td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+                <!-- View Plats Section -->
+        <div id="viewPlatsSection" class="form-section">
+            <h2>All Plats</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Plat Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Plat 1</td>
+                        <td>Description of Plat 1</td>
+                        <td>$10.00</td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+                <!-- Manage Reservations Section -->
+        <div id="manageReservationsSection" class="form-section">
+            <h2>Manage Reservations</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Client Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Number of People</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>2024-12-20</td>
+                        <td>6:00 PM</td>
+                        <td>4</td>
+                        <td>
+                            <button class="btn btn-success btn-accept">Approve</button>
+                            <button class="btn btn-danger btn-decline">Decline</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>2024-12-21</td>
+                        <td>7:00 PM</td>
+                        <td>2</td>
+                        <td>
+                            <button class="btn btn-success btn-accept">Approve</button>
+                            <button class="btn btn-danger btn-decline">Decline</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- View Statistics Section (Updated) -->
+        <div id="viewStatsSection" class="form-section">
+            <h2>Statistics</h2>
+            <p>Here are some key statistics about the menus, plats, and reservations:</p>
+
+            <!-- Cards for Statistics -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center">
+                            <i class="fas fa-utensils fa-3x text-primary"></i>
+                            <h4 class="card-title mt-3">Pending Requests</h4>
+                            <p class="card-text display-4">3</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center">
+                            <i class="fas fa-pizza-slice fa-3x text-success"></i>
+                            <h4 class="card-title mt-3">Approved Today</h4>
+                            <p class="card-text display-4">5</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center">
+                            <i class="fas fa-calendar-check fa-3x text-danger"></i>
+                            <h4 class="card-title mt-3">Approved for Tomorrow</h4>
+                            <p class="card-text display-4">7</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Client & Reservation Details -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Next Client</h4>
+                            <p class="card-text">John Doe - 6 PM</p>
+                            <p class="card-text">Reservation for 4 people</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Registered Clients</h4>
+                            <p class="card-text display-4">150</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Menu Form -->
         <div id="addMenuSection" class="form-section">
             <h2>Add Menu</h2>
             <form>
                 <div class="mb-3">
                     <label for="menuName" class="form-label">Menu Name</label>
-                    <input type="text" class="form-control" id="menuName" required>
+                    <input type="text" class="form-control" id="menuName" placeholder="Enter menu name">
                 </div>
                 <div class="mb-3">
-                    <label for="menuDescription" class="form-label">Menu Description</label>
-                    <textarea class="form-control" id="menuDescription" rows="3" required></textarea>
+                    <label for="menuDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="menuDescription" rows="3" placeholder="Enter menu description"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Add Menu</button>
             </form>
         </div>
 
-        <!-- View Menus Section -->
-        <h2>All Menus</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Menu Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Menu 1</td>
-                    <td>Description of menu 1</td>
-                    <td>
-                        <!-- Use btn-group to keep buttons inline -->
-                        <div class="btn-group">
-                            <div class="btn">
-                                <a href="">
-                                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                   <path d="M15.7734 4.42255L8.01924 12.2706C7.79291 12.4996 7.67974 12.6142 7.60917 12.7552C7.53859 12.8961 7.51521 13.0544 7.46845 13.3709L7.30803 14.4566C7.12534 15.693 7.034 16.3112 7.40145 16.6645C7.7689 17.0178 8.39306 16.9118 9.64137 16.6999L10.7375 16.5139C11.0571 16.4596 11.2168 16.4325 11.3579 16.3593C11.499 16.2861 11.6121 16.1715 11.8385 15.9425L19.5927 8.09446C20.2553 7.42379 20.5866 7.08846 20.5814 6.67712C20.5761 6.26578 20.2363 5.93906 19.5566 5.28563L18.6209 4.38599C17.9412 3.73256 17.6014 3.40584 17.1844 3.4112C16.7674 3.41655 16.4361 3.75188 15.7734 4.42255Z" stroke="black" stroke-width="null" class="my-path"></path>
-                                   <path d="M18.3329 9.22206L14.7773 5.6665" stroke="black" stroke-width="null" class="my-path"></path>
-                                   <path d="M21 21H3" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                   </svg>
-                                </a>
-                            </div>
-
-                            <div class="">
-                               <a href="">
-                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                 <path d="M5 7L5.29949 14.7868C5.41251 17.7252 5.46902 19.1944 6.40719 20.0972C7.34537 21 8.81543 21 11.7555 21H12.2433C15.1842 21 16.6547 21 17.5928 20.0972C18.531 19.1944 18.5875 17.7252 18.7006 14.7868L19 7" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 <path d="M10 13V16" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 <path d="M14 13V16" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 <path d="M20.4706 4.43329C18.6468 4.27371 17.735 4.19392 16.8229 4.13611C13.6109 3.93249 10.3891 3.93249 7.17707 4.13611C6.26506 4.19392 5.35318 4.27371 3.52942 4.43329" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 <path d="M13.7647 3.95212C13.7647 3.95212 13.3993 2.98339 11.6471 2.9834C9.8949 2.9834 9.52942 3.95211 9.52942 3.95211" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 </svg>
-                               </a>
-                            </div>
-                          
-
-                            <!-- <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button> -->
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Add Plat Section (Initially Hidden) -->
+        <!-- Add Plat Form -->
         <div id="addPlatSection" class="form-section">
             <h2>Add Plat</h2>
             <form>
                 <div class="mb-3">
                     <label for="platName" class="form-label">Plat Name</label>
-                    <input type="text" class="form-control" id="platName" required>
+                    <input type="text" class="form-control" id="platName" placeholder="Enter plat name">
                 </div>
                 <div class="mb-3">
-                    <label for="platDescription" class="form-label">Plat Description</label>
-                    <textarea class="form-control" id="platDescription" rows="3" required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="platImage" class="form-label">Plat Image URL</label>
-                    <input type="url" class="form-control" id="platImage" required>
+                    <label for="platDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="platDescription" rows="3" placeholder="Enter plat description"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Add Plat</button>
             </form>
         </div>
 
-        <!-- View Plats Section -->
-        <h2>All Plats</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Plat Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Plat 1</td>
-                    <td>Description of plat 1</td>
-                    <td><img src="plat1.jpg" alt="Plat 1" width="50"></td>
-                    <td>
-                        <!-- Use btn-group to keep buttons inline -->
-                        <div class="btn-group">
-                            <div class="btn">
-                                <a href="">
-                                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                   <path d="M15.7734 4.42255L8.01924 12.2706C7.79291 12.4996 7.67974 12.6142 7.60917 12.7552C7.53859 12.8961 7.51521 13.0544 7.46845 13.3709L7.30803 14.4566C7.12534 15.693 7.034 16.3112 7.40145 16.6645C7.7689 17.0178 8.39306 16.9118 9.64137 16.6999L10.7375 16.5139C11.0571 16.4596 11.2168 16.4325 11.3579 16.3593C11.499 16.2861 11.6121 16.1715 11.8385 15.9425L19.5927 8.09446C20.2553 7.42379 20.5866 7.08846 20.5814 6.67712C20.5761 6.26578 20.2363 5.93906 19.5566 5.28563L18.6209 4.38599C17.9412 3.73256 17.6014 3.40584 17.1844 3.4112C16.7674 3.41655 16.4361 3.75188 15.7734 4.42255Z" stroke="black" stroke-width="null" class="my-path"></path>
-                                   <path d="M18.3329 9.22206L14.7773 5.6665" stroke="black" stroke-width="null" class="my-path"></path>
-                                   <path d="M21 21H3" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                   </svg>
-                                </a>
-                            </div>
-
-                            <div class="">
-                               <a href="">
-                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                 <path d="M5 7L5.29949 14.7868C5.41251 17.7252 5.46902 19.1944 6.40719 20.0972C7.34537 21 8.81543 21 11.7555 21H12.2433C15.1842 21 16.6547 21 17.5928 20.0972C18.531 19.1944 18.5875 17.7252 18.7006 14.7868L19 7" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 <path d="M10 13V16" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 <path d="M14 13V16" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 <path d="M20.4706 4.43329C18.6468 4.27371 17.735 4.19392 16.8229 4.13611C13.6109 3.93249 10.3891 3.93249 7.17707 4.13611C6.26506 4.19392 5.35318 4.27371 3.52942 4.43329" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 <path d="M13.7647 3.95212C13.7647 3.95212 13.3993 2.98339 11.6471 2.9834C9.8949 2.9834 9.52942 3.95211 9.52942 3.95211" stroke="black" stroke-width="null" stroke-linecap="round" class="my-path"></path>
-                                 </svg>
-                               </a>
-                            </div>
-                          
-
-                            <!-- <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button> -->
-                        </div>
-                    </td>
-
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Manage Reservations Section -->
-        <h2>Manage Reservations</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Menu</th>
-                    <th scope="col">Date/Time</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>John Doe</td>
-                    <td>Menu 1</td>
-                    <td>2024-12-20 18:00</td>
-                    <td><span class="badge bg-warning">Pending</span></td>
-                    <td>
-                        <!-- Use btn-group to keep buttons inline -->
-                        <div class="btn-group">
-                            <button class="btn btn-accept">a</button>
-                            <button class="btn btn-decline"><i class="fas fa-times-circle"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle visibility for Add Menu form
-        document.getElementById('addMenuBtn').addEventListener('click', function() {
-            document.getElementById('addMenuSection').classList.toggle('form-section');
-            document.getElementById('addPlatSection').classList.add('form-section');  // Hide Add Plat form if it's visible
+        // Function to hide all sections and show the selected section
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(function(section) {
+                section.classList.remove('visible');
+            });
+            
+            // Show the selected section
+            document.getElementById(sectionId).classList.add('visible');
+        }
+
+        // Event listeners for sidebar links to show the corresponding section
+        document.getElementById('viewMenusBtn').addEventListener('click', function() {
+            showSection('viewMenusSection');
         });
 
-        // Toggle visibility for Add Plat form
+        document.getElementById('addMenuBtn').addEventListener('click', function() {
+            showSection('addMenuSection');
+        });
+
+        document.getElementById('viewPlatsBtn').addEventListener('click', function() {
+            showSection('viewPlatsSection');
+        });
+
         document.getElementById('addPlatBtn').addEventListener('click', function() {
-            document.getElementById('addPlatSection').classList.toggle('form-section');
-            document.getElementById('addMenuSection').classList.add('form-section');  // Hide Add Menu form if it's visible
+            showSection('addPlatSection');
+        });
+
+        document.getElementById('manageReservationsBtn').addEventListener('click', function() {
+            showSection('manageReservationsSection');
+        });
+
+        // Added event listener for the statistics link
+        document.getElementById('viewStatsBtn').addEventListener('click', function() {
+            showSection('viewStatsSection');
         });
     </script>
 </body>
