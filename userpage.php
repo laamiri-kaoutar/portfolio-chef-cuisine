@@ -181,20 +181,19 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="#hero" class="active">Home<br></a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#menu">Dishes</a></li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#testimonials">testimonials</a></li>
+          <li><a href="#Reservations">Reservations</a></li>
+          <li><a href="#Menus">Menus</a></li>
+            
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="index.html#book-a-table">log in</a>
+      <a class="btn-getstarted" href="">log out</a>
 
     </div>
 </header>
 
-<div class="container">
+<div class="container" id="Reservations">
 
     <h2>My Reservations</h2>
     <div class="cards-container">
@@ -215,9 +214,9 @@
         </div>
         <!-- Add more reservation cards here -->
     </div>
-<div class="container">
 
-</div>    
+    </div>    
+<div class="container" id="Menus">
     <h2>Available Menus</h2>
     <div class="cards-container">
         <!-- Example of a menu card -->

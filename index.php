@@ -60,7 +60,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="index.html#book-a-table">log in</a>
+      <a class="btn-getstarted" href="login.php">log in</a>
 
     </div>
   </header>
