@@ -31,18 +31,18 @@
 
   <style>
   .form_erros {
-    color: #ff4d4f; /* Red color to indicate errors */
-    font-size: 0.875rem; /* Slightly smaller than the default text size */
-    margin-top: 2px; /* Reduced space above the error message */
-    font-weight: 600; /* Semi-bold for emphasis */
-    background-color: #fff1f0; /* Light red background for visibility */
-    border: 1px solid #ffa39e; /* Border to highlight the message */
-    padding: 4px 8px; /* Padding for better readability */
-    border-radius: 4px; /* Rounded corners for a smooth appearance */
+    color: #ff4d4f; 
+    font-size: 0.875rem; 
+    margin-top: 2px; 
+    font-weight: 600; 
+    background-color: #fff1f0; 
+    border: 1px solid #ffa39e; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
   }
   
   input {
-    margin-bottom: 0; /* Remove any bottom margin on input fields */
+    margin-bottom: 0; 
   }
   .champs{
     margin-bottom: 16px;
