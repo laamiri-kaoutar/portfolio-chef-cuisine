@@ -55,7 +55,7 @@
 <body>
 
 <?php 
-// echo "hhhhhhhhhhhhhhhhhhhhhhhhh";
+
 
 // var_dump(isset($_SESSION["errors"]));
 // isset($_SESSION["errors"]);
