@@ -11,10 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $passwordHashee=password_hash($password,PASSWORD_DEFAULT);
-
     $confirmpwd = $_POST['confirm-password'];
     $role = 2;
+
+   
 
     // here i check if the user alreday exist
 
@@ -51,15 +51,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     
     if ($errors) {
-
         $_SESSION["errors"] = $errors;
+        $registerData = [
+            "username"=> $username,
+            "email"=> $email
+        ];
+        $_SESSION["registerData"] = $registerData;
+
+     
         header("Location:./register.php");
+        die();
     } else {
-       
+
+        $hashedpwd=password_hash($password,PASSWORD_DEFAULT);      
         $stmt = $conn -> prepare("INSERT INTO utilisateur (username, password , email  , role_id) VALUES (?, ?, ?,?)");
-        $stmt -> bind_param("sssi", $username,$passwordHashee, $email, $role); 
+        $stmt -> bind_param("sssi", $username,$hashedpwd, $email, $role); 
         $stmt -> execute(); 
+        unset($_SESSION['errors']);
+        $user = [
+            "username"=> $username,
+            "email"=> $email
+        ];
+        $_SESSION["user"] = $user;
+
         header("Location:./userpage.php");
+
+        die();
     }
           
             

@@ -1,6 +1,6 @@
 
 <?php 
-// session_start();
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,8 +57,7 @@
 <?php 
 
 
-// var_dump(isset($_SESSION["errors"]));
-// isset($_SESSION["errors"]);
+
 if (isset($_SESSION["errors"])) {
   $errors = $_SESSION["errors"];
   var_dump($errors);
@@ -66,7 +65,20 @@ if (isset($_SESSION["errors"])) {
 
 }
 
-var_dump(isset($_SESSION["errors"]));
+if (isset($_SESSION["registerData"])) {
+  $registerData = $_SESSION["registerData"];
+  var_dump($registerData);
+  echo $registerData["username"] ;
+
+}
+echo "hjfdddbbbbbbbbbbbbbbbbbbbb";
+
+var_dump(isset($_SESSION["registerData"]))  ;
+var_dump(isset($_SESSION["errors"]))  ; 
+
+
+
+
 
 
 ?>
@@ -77,7 +89,7 @@ var_dump(isset($_SESSION["errors"]));
             <form action="processregister.php" method="POST">
               <div class="champs">
                 <label for="username" style="color: var(--default-color);">Username</label>
-                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                <input type="text" id="username" name="username" placeholder="Choose a username" <?php if (isset($registerData)) { ?> value=" <?= $registerData["username"] ?> " <?php } ?> required>
                 <?php if (isset($errors["usedname"])) {?>
                   <div class="form_erros"><?= $errors["usedname"] ?></div>
                 <?php  
@@ -89,7 +101,7 @@ var_dump(isset($_SESSION["errors"]));
 
               <div class="champs">
                 <label for="email" style="color: var(--default-color);">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <input type="text" id="email" name="email" placeholder="Enter your email" <?php if (isset($registerData)) { ?> value=" <?= $registerData["email"] ?> " <?php } ?> required>
                 <?php if (isset($errors["invalidemail"])) {?>
                   <div class="form_erros"><?= $errors["invalidemail"] ?></div>
                 <?php 
