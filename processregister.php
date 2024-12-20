@@ -12,9 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirmpwd = $_POST['confirm-password'];
-    $role = 2;
-
-   
+    $role = 1;
 
     // here i check if the user alreday exist
 
@@ -67,10 +65,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $conn -> prepare("INSERT INTO utilisateur (username, password , email  , role_id) VALUES (?, ?, ?,?)");
         $stmt -> bind_param("sssi", $username,$hashedpwd, $email, $role); 
         $stmt -> execute(); 
+    
         unset($_SESSION['errors']);
+
+        $last_id = $conn->insert_id;
+
+
         $user = [
             "username"=> $username,
-            "email"=> $email
+            "email"=> $email,
+            "id"=> $last_id,
+            "role" => "client"   
         ];
         $_SESSION["user"] = $user;
 

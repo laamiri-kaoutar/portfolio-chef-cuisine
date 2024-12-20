@@ -71,7 +71,6 @@ if (isset($_SESSION["registerData"])) {
   echo $registerData["username"] ;
 
 }
-echo "hjfdddbbbbbbbbbbbbbbbbbbbb";
 
 var_dump(isset($_SESSION["registerData"]))  ;
 var_dump(isset($_SESSION["errors"]))  ; 

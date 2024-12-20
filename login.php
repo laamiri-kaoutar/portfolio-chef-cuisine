@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,18 +27,89 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
+  <style>
+  .form_erros {
+    color: #ff4d4f; 
+    font-size: 0.875rem; 
+    margin-top: 2px; 
+    font-weight: 600; 
+    background-color: #fff1f0; 
+    border: 1px solid #ffa39e; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+  }
+  
+  input {
+    margin-bottom: 0; 
+  }
+  .champs{
+    margin-bottom: 16px;
+  }
+</style>
+
 </head>
 <body>
+
+<?php 
+
+
+session_start();
+
+
+var_dump(isset($_SESSION["registerData"]))  ;
+var_dump(isset($_SESSION["errors"]))  ; 
+
+
+if (isset($_SESSION["errors"])) {
+  $errors = $_SESSION["errors"];
+  var_dump($errors);
+  unset($_SESSION['errors']);
+
+}
+
+if (isset($_SESSION["registerData"])) {
+  $registerData = $_SESSION["registerData"];
+  var_dump($registerData);
+  echo $registerData["username"] ;
+  unset($_SESSION['registerData']);
+
+}
+
+
+
+
+
+
+
+
+?>
 
 <section>
     <div class="form-container">
         <h2 style="color: var(--heading-color);">Login</h2>
-        <form action="login.php" method="POST">
+        <form action="processlogin.php" method="POST">
+
+        <div class="champs">
             <label for="username" style="color: var(--default-color);">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <input type="text" id="username" name="username" placeholder="Enter your username" <?php if (isset($registerData)) { ?> value=" <?= $registerData["username"] ?> " <?php } ?>  required>
+            <?php if (isset($errors["nousername"])) {?>
+                  <div class="form_erros"><?= $errors["nousername"] ?></div>
+                <?php  
+                } elseif (isset($errors["emptyname"])) {?> 
+                  <div class="form_erros"><?= $errors["emptyname"] ?></div>
+                <?php   
+                } ?> 
+        </div>
+
+        <div class="champs">
     
             <label for="password" style="color: var(--default-color);">Password</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <?php if (isset($errors["invalidpwd"])) {?>
+                  <div class="form_erros"><?= $errors["invalidpwd"] ?></div>
+            <?php  
+            } ?>
+        </div>
     
             <button type="submit" style="background-color: var(--accent-color); color: var(--contrast-color);">Login</button>
         </form>

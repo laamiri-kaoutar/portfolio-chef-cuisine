@@ -1,3 +1,21 @@
+<?php 
+session_start();
+
+if (isset($_SESSION["user"]) || $user['role'] == "client" ) {
+
+    // $user = $_SESSION["user"];
+
+    // var_dump($user);
+
+
+} else {
+
+    header("Location:./login.php");
+    die();
+}
+ 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

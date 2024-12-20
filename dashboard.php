@@ -1,3 +1,21 @@
+
+<?php 
+session_start();
+
+if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
+
+    // $user = $_SESSION["user"];
+
+    // var_dump($user);
+
+
+} else {
+
+    header("Location:./login.php");
+    die();
+}
+ 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,6 +152,10 @@
 .logout-btn:hover {
     background-color: #c82333;
 }
+ 
+.btn-form {
+    width: auto;
+}
 
 
     </style>
@@ -147,7 +169,6 @@
         <a href="#" id="viewPlatsBtn"><i class="fas fa-eye icon-btn"></i> View Plats</a>
         <a href="#" id="manageReservationsBtn"><i class="fas fa-calendar-check icon-btn"></i> Manage Reservations</a>
         <a href="#" id="addMenuBtn"><i class="fas fa-plus icon-btn"></i> Add Menu</a>
-        <a href="#" id="addPlatBtn"><i class="fas fa-plus icon-btn"></i> Add Plat</a>
         <a href="#" id="viewStatsBtn"><i class="fas fa-chart-line icon-btn"></i> View Statistics</a>
     </div>
 
@@ -316,36 +337,73 @@
         </div>
 
         <!-- Add Menu Form -->
+
         <div id="addMenuSection" class="form-section">
             <h2>Add Menu</h2>
-            <form>
+            <form id="menuForm">
                 <div class="mb-3">
                     <label for="menuName" class="form-label">Menu Name</label>
-                    <input type="text" class="form-control" id="menuName" placeholder="Enter menu name">
+                    <input type="text" class="form-control" id="menuName" placeholder="Enter menu name" required>
                 </div>
                 <div class="mb-3">
                     <label for="menuDescription" class="form-label">Description</label>
-                    <textarea class="form-control" id="menuDescription" rows="3" placeholder="Enter menu description"></textarea>
+                    <textarea class="form-control" id="menuDescription" rows="3" placeholder="Enter menu description" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Add Menu</button>
+                <div class="mb-3">
+                    <label for="menuImage" class="form-label">Menu Image</label>
+                    <input type="file" class="form-control" id="menuImage" accept="image/*" required>
+                </div>
+                <hr>
+                <h3>Plats</h3>
+                <div id="platsContainer"></div>
+                <button type="button" class="btn btn-secondary btn-form" id="addPlatButton"> + Add Plat</button>
+                <!-- <hr> -->
+                <button type="submit" class="btn btn-primary btn-form">Submit Menu</button>
             </form>
         </div>
+        
+<script>
+    const platsContainer = document.getElementById('platsContainer');
+    const addPlatButton = document.getElementById('addPlatButton');
+    let platCount = 0;
 
-        <!-- Add Plat Form -->
-        <div id="addPlatSection" class="form-section">
-            <h2>Add Plat</h2>
-            <form>
-                <div class="mb-3">
-                    <label for="platName" class="form-label">Plat Name</label>
-                    <input type="text" class="form-control" id="platName" placeholder="Enter plat name">
-                </div>
-                <div class="mb-3">
-                    <label for="platDescription" class="form-label">Description</label>
-                    <textarea class="form-control" id="platDescription" rows="3" placeholder="Enter plat description"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Plat</button>
-            </form>
-        </div>
+    addPlatButton.addEventListener('click', () => {
+        platCount++;
+        const platDiv = document.createElement('div');
+        platDiv.className = 'plat-entry';
+        platDiv.innerHTML = `
+            <hr>
+            <div class="mb-3">
+                <label for="platName${platCount}" class="form-label">Plat Name</label>
+                <input type="text" class="form-control" id="platName${platCount}" name="platName${platCount}" placeholder="Enter plat name" required>
+            </div>
+            <div class="mb-3">
+                <label for="platDescription${platCount}" class="form-label">Description</label>
+                <textarea class="form-control" id="platDescription${platCount}" name="platDescription${platCount}" rows="2" placeholder="Enter plat description" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="platImage${platCount}" class="form-label">Plat Image</label>
+                <input type="file" class="form-control" id="platImage${platCount}" name="platImage${platCount}" accept="image/*" required>
+            </div>
+            <button type="button" class="btn btn-danger removePlatButton btn-form">Remove Plat</button>
+            <hr>
+        `;
+        platsContainer.appendChild(platDiv);
+
+        // Add remove functionality
+        platDiv.querySelector('.removePlatButton').addEventListener('click', () => {
+            platsContainer.removeChild(platDiv);
+        });
+    });
+
+    document.getElementById('menuForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        // Collect form data and process as needed
+        alert('Menu and Plats submitted!');
+    });
+</script>
+
+ 
 
     </div>
 
@@ -363,21 +421,25 @@
         }
 
         // Event listeners for sidebar links to show the corresponding section
-        document.getElementById('viewMenusBtn').addEventListener('click', function() {
-            showSection('viewMenusSection');
-        });
+       
 
         document.getElementById('addMenuBtn').addEventListener('click', function() {
             showSection('addMenuSection');
+        });
+
+        document.getElementById('addPlatBtn').addEventListener('click', function() {
+            showSection('addPlatSection');
+        });
+
+        document.getElementById('viewMenusBtn').addEventListener('click', function() {
+            showSection('viewMenusSection');
         });
 
         document.getElementById('viewPlatsBtn').addEventListener('click', function() {
             showSection('viewPlatsSection');
         });
 
-        document.getElementById('addPlatBtn').addEventListener('click', function() {
-            showSection('addPlatSection');
-        });
+      
 
         document.getElementById('manageReservationsBtn').addEventListener('click', function() {
             showSection('manageReservationsSection');
@@ -387,6 +449,8 @@
         document.getElementById('viewStatsBtn').addEventListener('click', function() {
             showSection('viewStatsSection');
         });
+
+        
     </script>
 </body>
 </html>
