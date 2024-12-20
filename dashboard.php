@@ -340,18 +340,18 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
 
         <div id="addMenuSection" class="form-section">
             <h2>Add Menu</h2>
-            <form id="menuForm">
+            <form id="menuForm" method ="POST" action="addMenu.php">
                 <div class="mb-3">
                     <label for="menuName" class="form-label">Menu Name</label>
-                    <input type="text" class="form-control" id="menuName" placeholder="Enter menu name" required>
+                    <input type="text" class="form-control" id="menuName" name="menuName" placeholder="Enter menu name" required>
                 </div>
                 <div class="mb-3">
                     <label for="menuDescription" class="form-label">Description</label>
-                    <textarea class="form-control" id="menuDescription" rows="3" placeholder="Enter menu description" required></textarea>
+                    <textarea class="form-control" id="menuDescription" name="menuDescription" rows="3" placeholder="Enter menu description" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="menuImage" class="form-label">Menu Image</label>
-                    <input type="file" class="form-control" id="menuImage" accept="image/*" required>
+                    <input type="file" class="form-control" id="menuImage" name="menuImage" accept="image/*" >
                 </div>
                 <hr>
                 <h3>Plats</h3>
@@ -383,7 +383,7 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
             </div>
             <div class="mb-3">
                 <label for="platImage${platCount}" class="form-label">Plat Image</label>
-                <input type="file" class="form-control" id="platImage${platCount}" name="platImage${platCount}" accept="image/*" required>
+                <input type="file" class="form-control" id="platImage${platCount}" name="platImage${platCount}" accept="image/*" >
             </div>
             <button type="button" class="btn btn-danger removePlatButton btn-form">Remove Plat</button>
             <hr>
@@ -396,11 +396,11 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
         });
     });
 
-    document.getElementById('menuForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Collect form data and process as needed
-        alert('Menu and Plats submitted!');
-    });
+    // document.getElementById('menuForm').addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    //     Collect form data and process as needed
+    //     alert('Menu and Plats submitted!');
+    // });
 </script>
 
  

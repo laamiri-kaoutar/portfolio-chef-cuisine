@@ -3,32 +3,35 @@ require "./include/database.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $menuName = $_POST['menuName'];
-    $menuPrice = $_POST['menuPrice'];
+    $menuDescription = $_POST['menuDescription'];
 
-    // Étape 1 : Insertion du menu
-    $stmtMenu = $conn->prepare("INSERT INTO menu (nom, prix) VALUES (?, ?)");
-    $stmtMenu->bind_param("sd", $menuName, $menuPrice);
+    $stmtMenu = $conn->prepare("INSERT INTO menu (menu_name	, description) VALUES (?, ?)");
+    $stmtMenu->bind_param("ss", $menuName, $menuDescription);
 
     if ($stmtMenu->execute()) {
         $menuId = $conn->insert_id;
 
         // Étape 2 : Récupération des plats
-        foreach ($POST as $key => $value) {
-            if (strpos($key, 'dishTitle') === 0) {
-                $dishNumber = strreplace('dishTitle', '', $key);
-                $dishTitle = $value;
-                $dishCategory = $POST["dishCategory$dishNumber"];
+        foreach ($_POST as $key => $value) {
+
+            $pattern = "/^platName/";
+            
+            if (preg_match($pattern, $key) == 1) {
+
+                $platNumber = preg_replace($pattern, "", $key);
+                $platName = $value;
+                $platDescription = $_POST["platDescription$platNumber"];
 
                 // Insertion du plat
-                $stmtPlat = $conn->prepare("INSERT INTO plat (nom, categorie) VALUES (?, ?)");
-                $stmtPlat->bind_param("ss", $dishTitle, $dishCategory);
-                if ($stmtPlat->execute()) {
-                    $platId = $stmtPlat->insert_id;
+                $Plat = $conn->prepare("INSERT INTO plat (plat_name	, description ) VALUES (?, ?)");
+                $Plat->bind_param("ss", $platName, $platDescription);
+                if ($Plat->execute()) {
+                    $platId = $Plat->insert_id;
 
                     // Création de la relation dans platMenu
-                    $stmtRelation = $conn->prepare("INSERT INTO platMenu (menu_id, plat_id) VALUES (?, ?)");
-                    $stmtRelation->bind_param("ii", $menuId, $platId);
-                    $stmtRelation->execute();
+                    $assoc = $conn->prepare("INSERT INTO menu_plat (menu_id, plat_id) VALUES (?, ?)");
+                    $assoc->bind_param("ii", $menuId, $platId);
+                    $assoc->execute();
                 }
             }
         }
