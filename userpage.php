@@ -192,10 +192,19 @@ if (isset($_SESSION["user"]) ) {
 <?php 
 require "./include/database.php";
 
-$stmtmenu = $conn->prepare("SELECT * FROM menu ");
-$stmtmenu ->execute();
-$resultmenu =  $stmtmenu->get_result();
-// $row = $resultmenu->fetch_assoc();
+
+
+$id = $user['id'];
+
+$stmtreservation = $conn->prepare("SELECT * FROM reservation where user_id = ? order BY status ");
+$stmtreservation->bind_param("i" ,$id );
+$stmtreservation ->execute();
+$resultreservation =  $stmtreservation->get_result();
+// $row = $resultreservation->fetch_assoc();
+// while ($row = $resultreservation->fetch_assoc()) {
+// var_dump($row);
+
+// }
 
 ?>
 
@@ -231,7 +240,7 @@ $resultmenu =  $stmtmenu->get_result();
     <h2>My Reservations</h2>
     <div class="cards-container">
         <!-- Example of a reservation card -->
-        <div class="card">
+        <!-- <div class="card">
             <img src="./assets/img/stats-bg.jpg" alt="Reservation">
             <div class="card-body">
                 <h3>Reservation #1</h3>
@@ -244,8 +253,39 @@ $resultmenu =  $stmtmenu->get_result();
                     <button>Cancel</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Add more reservation cards here -->
+    <?php
+        while ($row = $resultreservation->fetch_assoc()) {
+            // var_dump($row);
+              $stmtmenu = $conn->prepare("SELECT menu_name FROM menu WHERE menu_id= ? ");
+              $stmtmenu->bind_param("i" , $row["menu_id"] );
+              $stmtmenu ->execute();
+              $resultmenu =  $stmtmenu->get_result();
+              $menu = $resultmenu->fetch_assoc();
+              $menu=$menu["menu_name"];
+            //   var_dump($menu);
+            ?>
+
+        <div class="card">
+            <img src="./assets/img/stats-bg.jpg" alt="Reservation">
+            <div class="card-body">
+                <h3>Reservated menu : <?= $menu?></h3>
+                <p>Date: <?= $row["reservation_date"]?> </p>
+                <p>Status: <?= $row["status"]?></p>
+
+                <p>Time: <?= $row["reservation_time"]?></p>
+                <p>Guests: <?= $row["guests"]?></p>
+
+                <div class="button-group">
+                    <button onclick="openForm()">Modify</button>
+                    <button>Cancel</button>
+                </div>
+            </div>
+        </div>
+    <?php
+    }?>
+    
     </div>
 
     </div>    
@@ -301,6 +341,8 @@ $resultmenu =  $stmtmenu->get_result();
             <input type="date" id="reservation-date" name="reservation_date">
             <label for="reservation-time">Time:</label>
             <input type="time" id="reservation-time" name="reservation_time">
+            <label for="guests">Number of Guests:</label>
+            <input type="number" id="guests" name="guests"required>
             <div class="button-group">
                 <button type="submit" class="close-btn">Submit</button>
                 <button type="button" class="close-btn" onclick="closeForm()">Close</button>
@@ -312,58 +354,58 @@ $resultmenu =  $stmtmenu->get_result();
 
 <footer id="footer" class="footer dark-background">
 
-<div class="container">
-  <div class="row gy-3">
-    <div class="col-lg-3 col-md-6 d-flex">
-      <i class="bi bi-geo-alt icon"></i>
-      <div class="address">
-        <h4>Address</h4>
-        <p>A108 Adam Street</p>
-        <p>New York, NY 535022</p>
-        <p></p>
-      </div>
-
-    </div>
-
-    <div class="col-lg-3 col-md-6 d-flex">
-      <i class="bi bi-telephone icon"></i>
-      <div>
-        <h4>Contact</h4>
-        <p>
-          <strong>Phone:</strong> <span>+212 695 548 855</span><br>
-          <strong>Email:</strong> <span>ali.hassan@gmail.com</span><br>
-        </p>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6 d-flex">
-      <i class="bi bi-clock icon"></i>
-      <div>
-        <h4>Opening Hours</h4>
-        <p>
-          <strong>Mon-Sat:</strong> <span>9AM - 23PM</span><br>
-          <strong>Sunday</strong>: <span>Closed</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-      <h4>Follow Us</h4>
-      <div class="social-links d-flex">
-        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<div class="container copyright text-center mt-4">
-  <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span></p>
-</div>
-
+   <div class="container">
+     <div class="row gy-3">
+       <div class="col-lg-3 col-md-6 d-flex">
+         <i class="bi bi-geo-alt icon"></i>
+         <div class="address">
+           <h4>Address</h4>
+           <p>A108 Adam Street</p>
+           <p>New York, NY 535022</p>
+           <p></p>
+         </div>
+   
+       </div>
+   
+       <div class="col-lg-3 col-md-6 d-flex">
+         <i class="bi bi-telephone icon"></i>
+         <div>
+           <h4>Contact</h4>
+           <p>
+             <strong>Phone:</strong> <span>+212 695 548 855</span><br>
+             <strong>Email:</strong> <span>ali.hassan@gmail.com</span><br>
+           </p>
+         </div>
+       </div>
+   
+       <div class="col-lg-3 col-md-6 d-flex">
+         <i class="bi bi-clock icon"></i>
+         <div>
+           <h4>Opening Hours</h4>
+           <p>
+             <strong>Mon-Sat:</strong> <span>9AM - 23PM</span><br>
+             <strong>Sunday</strong>: <span>Closed</span>
+           </p>
+         </div>
+       </div>
+   
+       <div class="col-lg-3 col-md-6">
+         <h4>Follow Us</h4>
+         <div class="social-links d-flex">
+           <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+           <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+           <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+           <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+         </div>
+       </div>
+   
+     </div>
+   </div>
+   
+   <div class="container copyright text-center mt-4">
+     <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span></p>
+   </div>
+   
 </footer>
 
 <script>

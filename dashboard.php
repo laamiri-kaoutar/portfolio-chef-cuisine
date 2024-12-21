@@ -169,6 +169,55 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
     
 }
 
+.btn-group{
+    display : flex ;
+    width : 100% ;
+    justify-content: space-between;
+    gap : 8px;
+
+}
+
+
+.modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .close-btn {
+            background-color: var(--accent-color);
+            color: var(--contrast-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background-color: #a80a0a;
+        }
+
+        .modal h3 {
+            color: var(--heading-color);
+        }
+
 
     </style>
 </head>
@@ -319,28 +368,50 @@ $resultreservation =  $stmtreservation->get_result();
                     </tr>
                 </thead>
                 <tbody>
-                        <?php while ($row = $resultpltat->fetch_assoc()) {
+                        <?php while ($row = $resultreservation->fetch_assoc()) {
+                            var_dump($row);
+                           // $row = $resultreservation->fetch_assoc();
+                           $stmtmenu = $conn->prepare("SELECT menu_name FROM menu WHERE menu_id= ? ");
+                           $stmtmenu->bind_param("i" , $row["menu_id"] );
+                           $stmtmenu ->execute();
+                           $resultmenu =  $stmtmenu->get_result();
+                           $menu = $resultmenu->fetch_assoc();
+                           $menu=$menu["menu_name"];   
 
-                            $stmtuser = $conn->prepare("SELECT username FROM utilisateur WHERE user_id = user_id ");
-                            $stmtuser ->execute();
-                            $resultuser =  $stmtuser->get_result();
-                            $name = $resultuser ->fetch_assoc();
-                            $stmtmenu = $conn->prepare("SELECT menu_name FROM utilisateur WHERE menu_id = menu_id ");
-                            $stmtmenu ->execute();
-                            $resultmenu =  $stmtmenu->get_result();
-                            $menu = $resultmenu ->fetch_assoc();     
+                           $stmtuser = $conn->prepare("SELECT username FROM utilisateur WHERE user_id= ? ");
+                           $stmtuser->bind_param("i" , $row["user_id"] );
+                           $stmtuser ->execute();
+                           $resultuser =  $stmtuser->get_result();
+                           $username = $resultuser->fetch_assoc();
+                           $name=$username["username"];   
+                         
+                         
+                           var_dump($menu);
                             ?>
                             <tr>
                             <td><?= $name?></td>
-                            <td><?= $row['revervation_date']?></td>
-                            <td><?= $row['revervation_time']?></td>
+                            <td><?= $row['reservation_date']?></td>
+                            <td><?= $row['reservation_time']?></td>
                             <td><?= $menu ?></td>
                             <td><?= $row['status']?></td>
 
-                            <div class="btn-group">
-                               <button class="btn btn-success btn-accept">Approve</button>
-                               <button class="btn btn-danger btn-decline">Decline</button>
-                            </div> 
+                            <td>
+                                <div class="btn-group">
+                                    <?php if ($row['status'] === 'pending') { ?>
+                                        <button class="btn btn-success btn-accept" onclick="openApproving(<?= $row['id'] ?>)" >Approve</button>
+                                        <button class="btn btn-danger btn-decline"  onclick="openDeclining(<?= $row['id'] ?>)" >Decline</button>
+                                    <?php
+                                    } elseif ($row['status'] === 'declined') {  ?>
+                                        <button class="btn btn-success btn-accept" onclick="openApproving(<?= $row['id'] ?>)" >Approve</button>
+                                    <?php    
+                                    } elseif ($row['status'] === 'approved') {  ?>
+                                        <button class="btn btn-danger btn-decline" onclick="openDeclining(<?= $row['id'] ?>)" >Decline</button>
+                                    <?php    
+                                    } ?>
+                                   <!-- <button class="btn btn-success btn-accept">Approve</button>
+                                   <button class="btn btn-danger btn-decline">Decline</button> -->
+                                </div> 
+                            </td>
                 
                             </tr>
                         <?php    
@@ -460,9 +531,56 @@ $resultreservation =  $stmtreservation->get_result();
 
     </div>
 
+
+    <div id="approvingModal" class="modal">
+        <div class="modal-content">
+            <h3>Approving reservation</h3>
+            <form action="Approving.php" method="POST"  >
+                <input type="hidden" id="reservationId" name="menu_id">
+                <div class="btn-group">
+                    <button type="submit" class="close-btn">Continue</button>
+                    <button type="button" class="close-btn" onclick="closeApproving()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<div id="DecliningModal" class="modal">
+    <div class="modal-content">
+        <h3>Declining reservation</h3>
+        <form action="Declining.php" method="POST"  >
+            <input type="hidden" id="reservationId" name="menu_id">
+            <div class="btn-group">
+                <button type="submit" class="close-btn">Continue</button>
+                <button type="button" class="close-btn" onclick="closeDeclining()">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+
+        function openApproving(id) {
+                document.getElementById('reservationId').value = id;
+                document.getElementById('approvingModal').style.display = 'flex';
+            }
+        
+            function closeApproving() {
+                document.getElementById('approvingModal').style.display = 'none';
+            }
+
+            function openDeclining(id) {
+                document.getElementById('reservationId').value = id;
+                document.getElementById('DecliningModal').style.display = 'flex';
+            }
+        
+            function closeDeclining() {
+                document.getElementById('DecliningModal').style.display = 'none';
+            }
 
             // Function to hide all sections and show the selected section
             function showSection(sectionId) {
