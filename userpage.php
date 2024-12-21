@@ -295,7 +295,7 @@ $resultmenu =  $stmtmenu->get_result();
 <div id="reservationModal" class="modal">
     <div class="modal-content">
         <h3>Reserve a Menu</h3>
-        <form action="#">
+        <form action="reserveMenu.php" method="POST"  >
             <input type="hidden" id="menuId" name="menu_id">
             <label for="reservation-date">Date:</label>
             <input type="date" id="reservation-date" name="reservation_date">
