@@ -536,7 +536,7 @@ $resultreservation =  $stmtreservation->get_result();
         <div class="modal-content">
             <h3>Approving reservation</h3>
             <form action="Approving.php" method="POST"  >
-                <input type="hidden" id="reservationId" name="menu_id">
+                <input type="hidden" id="reservationId" name="reservation_id">
                 <div class="btn-group">
                     <button type="submit" class="close-btn">Continue</button>
                     <button type="button" class="close-btn" onclick="closeApproving()">Close</button>
@@ -549,7 +549,7 @@ $resultreservation =  $stmtreservation->get_result();
     <div class="modal-content">
         <h3>Declining reservation</h3>
         <form action="Declining.php" method="POST"  >
-            <input type="hidden" id="reservationId" name="menu_id">
+            <input type="hidden" id="reservationId" name="reservation_id">
             <div class="btn-group">
                 <button type="submit" class="close-btn">Continue</button>
                 <button type="button" class="close-btn" onclick="closeDeclining()">Close</button>
