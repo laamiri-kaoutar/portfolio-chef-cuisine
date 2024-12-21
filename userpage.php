@@ -1,9 +1,14 @@
 <?php 
 session_start();
 
-if (isset($_SESSION["user"]) || $user['role'] == "client" ) {
+if (isset($_SESSION["user"]) ) {
 
-    // $user = $_SESSION["user"];
+    $user = $_SESSION["user"];
+    if ($user['role'] != "client" ) {
+
+        header("Location:./login.php");
+        die();
+    }
 
     // var_dump($user);
 
@@ -184,6 +189,16 @@ if (isset($_SESSION["user"]) || $user['role'] == "client" ) {
 
     </style>
 </head>
+<?php 
+require "./include/database.php";
+
+$stmtmenu = $conn->prepare("SELECT * FROM menu ");
+$stmtmenu ->execute();
+$resultmenu =  $stmtmenu->get_result();
+// $row = $resultmenu->fetch_assoc();
+
+?>
+
 <body>
 
 <header id="header" class="header d-flex align-items-center sticky-top">
@@ -235,6 +250,9 @@ if (isset($_SESSION["user"]) || $user['role'] == "client" ) {
 
     </div>    
 <div class="container" id="Menus">
+
+
+
     <h2>Available Menus</h2>
     <div class="cards-container">
         <!-- Example of a menu card -->
@@ -250,6 +268,25 @@ if (isset($_SESSION["user"]) || $user['role'] == "client" ) {
             </div>
         </div>
 
+
+        <?php while ($row = $resultmenu->fetch_assoc()) { ?>
+
+             <div class="card">
+                 <img src="./assets/img/stats-bg.jpg" alt="Menu">
+                 <div class="card-body">
+                     <h3><?= $row['menu_name']?></h3>
+                     <p><?= $row['description']?></p>
+                     <p>Plats included: Dish 1, Dish 2, Dish 3</p>
+                     <div class="button-group">
+                         <button style=" width: fit-content ; margin :auto;" onclick="openForm(<?= $row['menu_id']?>)">Reserve</button>
+                     </div>
+                 </div>
+             </div>
+        
+        <?php    
+        }
+        ?>
+
         <!-- Add more menu cards here -->
     </div>
 </div>
@@ -259,10 +296,11 @@ if (isset($_SESSION["user"]) || $user['role'] == "client" ) {
     <div class="modal-content">
         <h3>Reserve a Menu</h3>
         <form action="#">
+            <input type="hidden" id="menuId" name="menu_id">
             <label for="reservation-date">Date:</label>
-            <input type="date" id="reservation-date" name="reservation-date">
+            <input type="date" id="reservation-date" name="reservation_date">
             <label for="reservation-time">Time:</label>
-            <input type="time" id="reservation-time" name="reservation-time">
+            <input type="time" id="reservation-time" name="reservation_time">
             <div class="button-group">
                 <button type="submit" class="close-btn">Submit</button>
                 <button type="button" class="close-btn" onclick="closeForm()">Close</button>
@@ -329,7 +367,8 @@ if (isset($_SESSION["user"]) || $user['role'] == "client" ) {
 </footer>
 
 <script>
-    function openForm() {
+    function openForm(id) {
+        document.getElementById('menuId').value = id;
         document.getElementById('reservationModal').style.display = 'flex';
     }
 

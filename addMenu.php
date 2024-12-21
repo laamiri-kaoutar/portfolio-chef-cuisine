@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        echo "Menu et plats ajoutés avec succès.";
+        header("Location:./dashboard.php");
     } else {
         echo "Erreur lors de l'ajout du menu.";
     }

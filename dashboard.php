@@ -154,12 +154,48 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
 }
  
 .btn-form {
+    display : flex ;
     width: auto;
+    gap: 8px
+    justify-self: center;
+
+}
+
+.table-image{
+    display : flex ;
+    width : 150px ;
+    border-radius : 10px ;
+    justify-self: center;
+    
 }
 
 
     </style>
 </head>
+<?php 
+require "./include/database.php";
+
+$stmtmenu = $conn->prepare("SELECT * FROM menu ");
+$stmtmenu ->execute();
+$resultmenu =  $stmtmenu->get_result();
+// $row = $resultmenu->fetch_assoc();
+
+
+$stmtpltat = $conn->prepare("SELECT * FROM plat ");
+$stmtpltat ->execute();
+$resultpltat =  $stmtpltat->get_result();
+// $row = $resultpltat->fetch_assoc();
+
+$stmtreservation = $conn->prepare("SELECT * FROM reservation ");
+$stmtreservation ->execute();
+$resultreservation =  $stmtreservation->get_result();
+// $row = $resultreservation->fetch_assoc();
+
+
+
+
+?>
+
 <body>
 
     <!-- Sidebar -->
@@ -175,7 +211,7 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
     <!-- Main Content -->
     <div class="main-content">
        <div class="header-banner">
-          <h1>Welcome, <span style="color: #dc3545;">Hasan</span>!</h1>
+          <h1>Welcome, <span style="color: #dc3545;">Hassan</span>!</h1>
           <button class="btn btn-danger logout-btn" onclick="logout()">
               <i class="fas fa-sign-out-alt"></i> Log Out
           </button>
@@ -190,19 +226,43 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
                     <tr>
                         <th scope="col">Menu Name</th>
                         <th scope="col">Description</th>
+                        <th scope="col">Image</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                    
+                        <?php while ($row = $resultmenu->fetch_assoc()) { ?>
+                            <tr>
+                            <td><?= $row['menu_name']?></td>
+                            <td><?= $row['description']?></td>
+                            <td><img class="table-image" src="./assets/img/gallery/gallery-4.jpg" alt=""></td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </td>
+
+                            </tr>
+                        <?php    
+                        }
+                        ?>
+
                     <tr>
-                        <td>Menu 1</td>
-                        <td>Description of menu 1</td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
-                            </div>
-                        </td>
+
+
+                    
+                              <td>Menu 1</td>
+                            <td>Description of menu 1</td>
+                            <td>image of menu 1</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </td>
+
                     </tr>
                 </tbody>
             </table>
@@ -216,22 +276,29 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
                     <tr>
                         <th scope="col">Plat Name</th>
                         <th scope="col">Description</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">image</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Plat 1</td>
-                        <td>Description of Plat 1</td>
-                        <td>$10.00</td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
-                            </div>
-                        </td>
-                    </tr>
+                        <?php while ($row = $resultpltat->fetch_assoc()) { ?>
+                            <tr>
+                            <td><?= $row['plat_name']?></td>
+                            <td><?= $row['description']?></td>
+                            <td><img class="table-image" src="./assets/img/gallery/gallery-4.jpg" alt=""></td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </td>
+
+                            </tr>
+                        <?php    
+                        }
+                        ?>
+
+
                 </tbody>
             </table>
         </div>
@@ -246,31 +313,58 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
                         <th scope="col">Client Name</th>
                         <th scope="col">Date</th>
                         <th scope="col">Time</th>
-                        <th scope="col">Number of People</th>
+                        <th scope="col">Menu</th>
+                        <th scope="col">status</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                        <?php while ($row = $resultpltat->fetch_assoc()) {
+
+                            $stmtuser = $conn->prepare("SELECT username FROM utilisateur WHERE user_id = user_id ");
+                            $stmtuser ->execute();
+                            $resultuser =  $stmtuser->get_result();
+                            $name = $resultuser ->fetch_assoc();
+                            $stmtmenu = $conn->prepare("SELECT menu_name FROM utilisateur WHERE menu_id = menu_id ");
+                            $stmtmenu ->execute();
+                            $resultmenu =  $stmtmenu->get_result();
+                            $menu = $resultmenu ->fetch_assoc();     
+                            ?>
+                            <tr>
+                            <td><?= $name?></td>
+                            <td><?= $row['revervation_date']?></td>
+                            <td><?= $row['revervation_time']?></td>
+                            <td><?= $menu ?></td>
+                            <td><?= $row['status']?></td>
+
+                            <div class="btn-group">
+                               <button class="btn btn-success btn-accept">Approve</button>
+                               <button class="btn btn-danger btn-decline">Decline</button>
+                            </div> 
+                
+                            </tr>
+                        <?php    
+                        }
+                        ?>
+
+
+
                     <tr>
                         <td>John Doe</td>
                         <td>2024-12-20</td>
                         <td>6:00 PM</td>
                         <td>4</td>
                         <td>
+
+                        <div class="btn-group">
                             <button class="btn btn-success btn-accept">Approve</button>
                             <button class="btn btn-danger btn-decline">Decline</button>
+                        </div>    
+
                         </td>
+                       
                     </tr>
-                    <tr>
-                        <td>Jane Smith</td>
-                        <td>2024-12-21</td>
-                        <td>7:00 PM</td>
-                        <td>2</td>
-                        <td>
-                            <button class="btn btn-success btn-accept">Approve</button>
-                            <button class="btn btn-danger btn-decline">Decline</button>
-                        </td>
-                    </tr>
+               
                 </tbody>
             </table>
         </div>
@@ -362,7 +456,57 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
             </form>
         </div>
         
-<script>
+ 
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+            // Function to hide all sections and show the selected section
+            function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(function(section) {
+                section.classList.remove('visible');
+            });
+            
+            // Show the selected section
+            document.getElementById(sectionId).classList.add('visible');
+        }
+
+        // Event listeners for sidebar links to show the corresponding section
+       
+
+        document.getElementById('addMenuBtn').addEventListener('click', function() {
+            showSection('addMenuSection');
+        });
+
+        document.getElementById('viewMenusBtn').addEventListener('click', function() {
+            showSection('viewMenusSection');
+        });
+
+        document.getElementById('viewPlatsBtn').addEventListener('click', function() {
+            showSection('viewPlatsSection');
+        });
+
+      
+
+        document.getElementById('manageReservationsBtn').addEventListener('click', function() {
+            showSection('manageReservationsSection');
+        });
+
+        // Added event listener for the statistics link
+        document.getElementById('viewStatsBtn').addEventListener('click', function() {
+            showSection('viewStatsSection');
+        });
+
+       
+
+
+
+
+
     const platsContainer = document.getElementById('platsContainer');
     const addPlatButton = document.getElementById('addPlatButton');
     let platCount = 0;
@@ -396,61 +540,8 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
         });
     });
 
-    // document.getElementById('menuForm').addEventListener('submit', (e) => {
-    //     e.preventDefault();
-    //     Collect form data and process as needed
-    //     alert('Menu and Plats submitted!');
-    // });
+
+
 </script>
-
- 
-
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Function to hide all sections and show the selected section
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.form-section').forEach(function(section) {
-                section.classList.remove('visible');
-            });
-            
-            // Show the selected section
-            document.getElementById(sectionId).classList.add('visible');
-        }
-
-        // Event listeners for sidebar links to show the corresponding section
-       
-
-        document.getElementById('addMenuBtn').addEventListener('click', function() {
-            showSection('addMenuSection');
-        });
-
-        document.getElementById('addPlatBtn').addEventListener('click', function() {
-            showSection('addPlatSection');
-        });
-
-        document.getElementById('viewMenusBtn').addEventListener('click', function() {
-            showSection('viewMenusSection');
-        });
-
-        document.getElementById('viewPlatsBtn').addEventListener('click', function() {
-            showSection('viewPlatsSection');
-        });
-
-      
-
-        document.getElementById('manageReservationsBtn').addEventListener('click', function() {
-            showSection('manageReservationsSection');
-        });
-
-        // Added event listener for the statistics link
-        document.getElementById('viewStatsBtn').addEventListener('click', function() {
-            showSection('viewStatsSection');
-        });
-
-        
-    </script>
 </body>
 </html>
