@@ -288,7 +288,7 @@ $resultreservation =  $stmtreservation->get_result();
                             <tr>
                             <td><?= $row['menu_name']?></td>
                             <td><?= $row['description']?></td>
-                            <td><img class="table-image" src="./assets/img/gallery/gallery-4.jpg" alt=""></td>
+                            <td><img class="table-image" src="./assets/img/<?php echo !empty($row['image']) ? $row['image'] : "gallery/gallery-4.jpg" ?>" alt=""></td>
                             <td>
                                 <div class="btn-group">
                                     <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
@@ -337,7 +337,8 @@ $resultreservation =  $stmtreservation->get_result();
                             <tr>
                             <td><?= $row['plat_name']?></td>
                             <td><?= $row['description']?></td>
-                            <td><img class="table-image" src="./assets/img/gallery/gallery-4.jpg" alt=""></td>
+                            <td><img class="table-image" src="./assets/img/<?php echo !empty($row['image']) ? $row['image'] : "gallery/gallery-4.jpg" ?>" alt=""></td>
+
                             <td>
                                 <div class="btn-group">
                                     <button class="btn btn-warning"><i class="fas fa-edit"></i></button>
@@ -447,7 +448,7 @@ $resultreservation =  $stmtreservation->get_result();
         <div id="viewStatsSection" class="form-section">
 
 
-        <?php require "./statistics.php"?>
+         <?php require "./statistics.php"?>
             <h2>Statistics</h2>
             <p>Here are some key statistics about the menus, plats, and reservations:</p>
 
@@ -511,7 +512,7 @@ $resultreservation =  $stmtreservation->get_result();
 
         <div id="addMenuSection" class="form-section">
             <h2>Add Menu</h2>
-            <form id="menuForm" method ="POST" action="addMenu.php">
+            <form id="menuForm" method ="POST" action="addMenu.php" enctype="multipart/form-data" >
                 <div class="mb-3">
                     <label for="menuName" class="form-label">Menu Name</label>
                     <input type="text" class="form-control" id="menuName" name="menuName" placeholder="Enter menu name" required>
@@ -571,32 +572,31 @@ $resultreservation =  $stmtreservation->get_result();
     <script>
 
         function openApproving(id) {
-                document.getElementById('approvingId').value = id;
-                document.getElementById('approvingModal').style.display = 'flex';
-            }
-        
-            function closeApproving() {
-                document.getElementById('approvingModal').style.display = 'none';
-            }
-
-            function openDeclining(id) {
-                document.getElementById('reservationId').value = id;
-                document.getElementById('DecliningModal').style.display = 'flex';
-            }
-        
-            function closeDeclining() {
-                document.getElementById('DecliningModal').style.display = 'none';
-            }
+            document.getElementById('approvingId').value = id;
+            document.getElementById('approvingModal').style.display = 'flex';
+        }
+    
+        function closeApproving() {
+            document.getElementById('approvingModal').style.display = 'none';
+        }
+        function openDeclining(id) {
+            document.getElementById('reservationId').value = id;
+            document.getElementById('DecliningModal').style.display = 'flex';
+        }
+    
+        function closeDeclining() {
+            document.getElementById('DecliningModal').style.display = 'none';
+        }
 
             // Function to hide all sections and show the selected section
-            function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.form-section').forEach(function(section) {
-                section.classList.remove('visible');
-            });
-            
-            // Show the selected section
-            document.getElementById(sectionId).classList.add('visible');
+        function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll('.form-section').forEach(function(section) {
+            section.classList.remove('visible');
+        });
+        
+        // Show the selected section
+        document.getElementById(sectionId).classList.add('visible');
         }
 
         // Event listeners for sidebar links to show the corresponding section
