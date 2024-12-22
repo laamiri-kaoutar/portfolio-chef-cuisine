@@ -206,6 +206,10 @@ $resultreservation =  $stmtreservation->get_result();
 
 // }
 
+$stmtmenus = $conn->prepare("SELECT * FROM menu ");
+$stmtmenus ->execute();
+$resultmenus =  $stmtmenus->get_result();
+
 ?>
 
 <body>
@@ -278,8 +282,8 @@ $resultreservation =  $stmtreservation->get_result();
                 <p>Guests: <?= $row["guests"]?></p>
 
                 <div class="button-group">
-                    <button onclick="openUpdate(<?= $row['guests']?>)">Modify</button>
-                    <button>Cancel</button>
+                    <button onclick="openUpdate(<?= $row['id']?>)">Modify</button>
+                    <a href="cancelreservation.php?id=<?= $row['id']?>"><button>cancel</button></a>
                 </div>
             </div>
         </div>
@@ -309,7 +313,7 @@ $resultreservation =  $stmtreservation->get_result();
         </div>
 
 
-        <?php while ($row = $resultmenu->fetch_assoc()) { ?>
+        <?php while ($row = $resultmenus->fetch_assoc()) { ?>
 
              <div class="card">
                  <img src="./assets/img/stats-bg.jpg" alt="Menu">
