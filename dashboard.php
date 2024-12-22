@@ -101,6 +101,9 @@ if (isset($_SESSION["user"]) || $user['role'] == "chef" ) {
 
         .btn-accept, .btn-decline {
             color: white;
+            width: fit-content !important;
+
+            /* width: fit !important; */
         }
 
         /* Hide the forms by default */
@@ -235,7 +238,7 @@ $stmtpltat ->execute();
 $resultpltat =  $stmtpltat->get_result();
 // $row = $resultpltat->fetch_assoc();
 
-$stmtreservation = $conn->prepare("SELECT * FROM reservation ");
+$stmtreservation = $conn->prepare("SELECT * FROM reservation ORDER BY FIELD(status, 'approved', 'pending', 'declined');");
 $stmtreservation ->execute();
 $resultreservation =  $stmtreservation->get_result();
 // $row = $resultreservation->fetch_assoc();
@@ -536,7 +539,7 @@ $resultreservation =  $stmtreservation->get_result();
         <div class="modal-content">
             <h3>Approving reservation</h3>
             <form action="Approving.php" method="POST"  >
-                <input type="hidden" id="reservationId" name="reservation_id">
+                <input type="hidden" id="approvingId" name="reservation_id">
                 <div class="btn-group">
                     <button type="submit" class="close-btn">Continue</button>
                     <button type="button" class="close-btn" onclick="closeApproving()">Close</button>
@@ -565,7 +568,7 @@ $resultreservation =  $stmtreservation->get_result();
     <script>
 
         function openApproving(id) {
-                document.getElementById('reservationId').value = id;
+                document.getElementById('approvingId').value = id;
                 document.getElementById('approvingModal').style.display = 'flex';
             }
         
