@@ -445,6 +445,9 @@ $resultreservation =  $stmtreservation->get_result();
 
         <!-- View Statistics Section (Updated) -->
         <div id="viewStatsSection" class="form-section">
+
+
+        <?php require "./statistics.php"?>
             <h2>Statistics</h2>
             <p>Here are some key statistics about the menus, plats, and reservations:</p>
 
@@ -455,7 +458,7 @@ $resultreservation =  $stmtreservation->get_result();
                         <div class="card-body text-center">
                             <i class="fas fa-utensils fa-3x text-primary"></i>
                             <h4 class="card-title mt-3">Pending Requests</h4>
-                            <p class="card-text display-4">3</p>
+                            <p class="card-text display-4"><?=$pending?></p>
                         </div>
                     </div>
                 </div>
@@ -465,7 +468,7 @@ $resultreservation =  $stmtreservation->get_result();
                         <div class="card-body text-center">
                             <i class="fas fa-pizza-slice fa-3x text-success"></i>
                             <h4 class="card-title mt-3">Approved Today</h4>
-                            <p class="card-text display-4">5</p>
+                            <p class="card-text display-4"><?=$nbr_today?></p>
                         </div>
                     </div>
                 </div>
@@ -475,7 +478,7 @@ $resultreservation =  $stmtreservation->get_result();
                         <div class="card-body text-center">
                             <i class="fas fa-calendar-check fa-3x text-danger"></i>
                             <h4 class="card-title mt-3">Approved for Tomorrow</h4>
-                            <p class="card-text display-4">7</p>
+                            <p class="card-text display-4"><?=$nbr_tomorrow?></p>
                         </div>
                     </div>
                 </div>
@@ -487,8 +490,8 @@ $resultreservation =  $stmtreservation->get_result();
                     <div class="card shadow-sm mb-4">
                         <div class="card-body text-center">
                             <h4 class="card-title">Next Client</h4>
-                            <p class="card-text">John Doe - 6 PM</p>
-                            <p class="card-text">Reservation for 4 people</p>
+                            <p class="card-text"><?=$username?> ON The <?=$reservation_date?></p>
+                            <p class="card-text">Reservation for <?=$guests?> people</p>
                         </div>
                     </div>
                 </div>
@@ -497,7 +500,7 @@ $resultreservation =  $stmtreservation->get_result();
                     <div class="card shadow-sm mb-4">
                         <div class="card-body text-center">
                             <h4 class="card-title">Registered Clients</h4>
-                            <p class="card-text display-4">150</p>
+                            <p class="card-text display-4"><?=$users?></p>
                         </div>
                     </div>
                 </div>

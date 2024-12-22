@@ -58,13 +58,29 @@ $users = $row['COUNT(*)'];
 var_dump($users);
 
 
+$stmtNextReservation = $conn->prepare("SELECT r.reservation_date, r.guests, u.username, u.email
+    FROM reservation r, utilisateur u
+    WHERE r.user_id = u.user_id AND r.status = 'approved' AND r.reservation_date >= ?
+    ORDER BY r.reservation_date ASC
+    LIMIT 1");
 
-$stmt = $conn->prepare("SELECT * FROM reservation where status = 'approved' ORDER BY reservation_date ");
-$stmt ->execute();
-$result =  $stmt->get_result();
-$row = $result->fetch_assoc();
-// $pending = $row['COUNT(*)'];
-var_dump($row);
+$stmtNextReservation->bind_param("s", $today);
+$stmtNextReservation->execute();
+$resultNextReservation = $stmtNextReservation->get_result();
+
+// Fetch and display the result if found
+if ($row = $resultNextReservation->fetch_assoc()) {
+    $username = $row['username'];
+    $email = $row['email'];
+    $reservation_date = $row['reservation_date'];
+    $guests  = $row['guests'];
+
+
+    // Display the details
+    var_dump( $username, $email, $reservation_date , $guests);
+} else {
+    echo "No approved reservation for tomorrow.";
+}
 
 
 

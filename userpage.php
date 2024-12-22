@@ -278,7 +278,7 @@ $resultreservation =  $stmtreservation->get_result();
                 <p>Guests: <?= $row["guests"]?></p>
 
                 <div class="button-group">
-                    <button onclick="openForm()">Modify</button>
+                    <button onclick="openUpdate(<?= $row['guests']?>)">Modify</button>
                     <button>Cancel</button>
                 </div>
             </div>
@@ -352,6 +352,24 @@ $resultreservation =  $stmtreservation->get_result();
 </div>
 
 
+<div id="updatereservationModal" class="modal">
+    <div class="modal-content">
+        <h3> Update Reservation</h3>
+        <form action="updatereservation.php" method="POST"  >
+            <input type="hidden" id="reservationId" name="reservation_id">
+            <label for="reservation-date">Date:</label>
+            <input type="date" id="reservation-date" name="reservation_date">
+            <label for="reservation-time">Time:</label>
+            <input type="time" id="reservation-time" name="reservation_time">
+          <div class="button-group">
+                <button type="submit" class="close-btn">Submit</button>
+                <button type="button" class="close-btn" onclick="closeUpdate()">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <footer id="footer" class="footer dark-background">
 
    <div class="container">
@@ -409,6 +427,15 @@ $resultreservation =  $stmtreservation->get_result();
 </footer>
 
 <script>
+    function openUpdate(id) {
+        document.getElementById('reservationId').value = id;
+        document.getElementById('updatereservationModal').style.display = 'flex';
+    }
+
+    function closeUpdate() {
+        document.getElementById('updatereservationModal').style.display = 'none';
+    }
+
     function openForm(id) {
         document.getElementById('menuId').value = id;
         document.getElementById('reservationModal').style.display = 'flex';
